@@ -18,9 +18,12 @@ Vagrant.configure("2") do |config|
 		  vb.cpus = opts[:cpus]
 		end
 
-		# Install net-tools on all VMs
-		node.vm.provision "shell", inline: "sudo apt-get update && sudo apt-get install -y curl net-tools"
-
+		# Install curl and net-tools on all VMs
+		node.vm.provision "shell", inline: <<-SHELL
+			sudo apt-get update
+			sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl net-tools
+	  	SHELL
+	  
 		# configure the VMs based on their roles
 		if opts[:role] == "master"
 		  node.vm.provision "shell", path: "scripts/k3s-master.sh"
