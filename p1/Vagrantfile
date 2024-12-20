@@ -1,1 +1,32 @@
-##
+# Vagrantfile for setting up a 2-node K3s Kubernetes cluster (1 master, 1 worker)
+Vagrant.configure("2") do |config|
+	# Define a common base configuration for all VMs
+	config.vm.box = "debian/bookworm64" # Debian 12 (Bookworm) 64-bit
+
+	# Define nodes with dynamic configuration
+	nodes = {
+	  "k3s-master" => { ip: "192.168.56.110", memory: 1024, cpus: 1, role: "master", hostname: "razahaS" },
+	  "k3s-worker1" => { ip: "192.168.56.111", memory: 512, cpus: 1, role: "worker", hostname: "razahaSW" }
+	}
+
+	nodes.each do |name, opts|
+	  config.vm.define name do |node|
+		node.vm.hostname = opts[:hostname]
+		node.vm.network "private_network", ip: opts[:ip]
+		node.vm.provider "virtualbox" do |vb|
+		  vb.memory = opts[:memory]
+		  vb.cpus = opts[:cpus]
+		end
+
+		# Install net-tools on all VMs
+		node.vm.provision "shell", inline: "sudo apt-get update && sudo apt-get install -y curl net-tools"
+
+		# configure the VMs based on their roles
+		if opts[:role] == "master"
+		  node.vm.provision "shell", path: "scripts/k3s-master.sh"
+		else
+		  node.vm.provision "shell", path: "scripts/k3s-worker.sh", args: ["192.168.56.110"]
+		end
+	  end
+	end
+  end
