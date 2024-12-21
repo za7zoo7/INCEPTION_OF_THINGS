@@ -1,0 +1,2 @@
+Vbox 6.1
+Vagrant 2.4.0
