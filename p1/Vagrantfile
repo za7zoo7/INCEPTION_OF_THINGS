@@ -5,17 +5,22 @@ Vagrant.configure("2") do |config|
 
 	# Define nodes with dynamic configuration
 	nodes = {
-	  "k3s-master" => { ip: "192.168.56.110", memory: 1024, cpus: 1, role: "master", hostname: "razahaS" },
-	  "k3s-worker1" => { ip: "192.168.56.111", memory: 512, cpus: 1, role: "worker", hostname: "razahaSW" }
+		"k3s-master" => { ip: "192.168.56.110", memory: 1024, cpus: 1, role: "master", hostname: "razahaS" , name: "alagriniS" },
+		"k3s-worker1" => { ip: "192.168.56.111", memory: 512, cpus: 1, role: "worker", hostname: "razahaSW", name: "alagriniSW" }
 	}
 
 	nodes.each do |name, opts|
 	  config.vm.define name do |node|
 		node.vm.hostname = opts[:hostname]
+		node.ssh.insert_key = false
+		# Disable the default NAT network
+		# node.vm.network "public_network", :disabled => true
+		# Set private network with static IP
 		node.vm.network "private_network", ip: opts[:ip]
 		node.vm.provider "virtualbox" do |vb|
 		  vb.memory = opts[:memory]
 		  vb.cpus = opts[:cpus]
+		  vb.name = opts[:name]
 		end
 
 		# Install curl and net-tools on all VMs
@@ -23,7 +28,7 @@ Vagrant.configure("2") do |config|
 			sudo apt-get update
 			sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl net-tools
 	  	SHELL
-	  
+
 		# configure the VMs based on their roles
 		if opts[:role] == "master"
 		  node.vm.provision "shell", path: "scripts/k3s-master.sh"
