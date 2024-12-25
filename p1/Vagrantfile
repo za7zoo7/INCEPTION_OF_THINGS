@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
 		node.vm.hostname = opts[:hostname]
 		node.vm.network "private_network", ip: opts[:ip]
 		
-		# Forward SSH port (optional)
+		# Forward SSH Tunel port for proxying
 		node.vm.network "forwarded_port", guest: 4711, host: 4711
   
 		node.vm.provider "virtualbox" do |vb|
@@ -35,7 +35,12 @@ Vagrant.configure("2") do |config|
 		end
   
 		node.vm.provision "shell", inline: "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y vim curl net-tools"
-  
+		
+		# Add k=kubernetes aliase in all machines
+		node.vm.provision "shell", inline: <<-SHELL
+				echo "alias k='kubectl'" >> /home/vagrant/.bashrc
+		SHELL
+
 		if role == :master
 		  node.vm.provision "shell", inline: <<-SHELL
 			curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--node-ip #{opts[:ip]}" sh -
