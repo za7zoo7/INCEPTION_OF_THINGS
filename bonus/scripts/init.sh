@@ -38,7 +38,7 @@ fi
 echo "ArgoCD password: $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)"
 
 kubectl get ns gitlab || kubectl create ns gitlab
-kubectl apply -n gitlab -f home/correctionmachine/iot/bonus/confs/gitlab-config.yml
+kubectl apply -n gitlab -f /home/correctionmachine/iot/bonus/confs/gitlab-config.yml
 
 
 # script must wait for confirmation from the user before proceeding
