@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/za7zoo7/INCEPTION_OF_THINGS.git
+    repoURL: http://gitlab.com:8080/root/iotapp.git  # Use the bridge service name
     targetRevision: main
-    path: manifests
+    path: manifest
   destination:
     server: https://kubernetes.default.svc
     namespace: dev

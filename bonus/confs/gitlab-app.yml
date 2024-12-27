@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab
+  namespace: gitlab
+  labels:
+    app: gitlab
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+      - name: gitlab
+        image: gitlab/gitlab-ce:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: config
+          mountPath: /etc/gitlab
+        - name: logs
+          mountPath: /var/log/gitlab
+        - name: data
+          mountPath: /var/opt/gitlab
+        ports:
+        - containerPort: 443
+        - containerPort: 80
+        - containerPort: 22
+        env:
+        - name: GITLAB_OMNIBUS_CONFIG
+          value: "external_url 'http://gitlab.com:8080'; nginx['listen_port'] = 80;"
+
+        # Add the readiness probe
+        readinessProbe:
+          httpGet:
+            path: /  # You can adjust this path based on your application's readiness endpoint
+            port: 80
+          initialDelaySeconds: 60  # Wait for 60 seconds before the first probe
+          periodSeconds: 10        # Probe every 10 seconds
+
+      volumes:
+      - name: config
+        hostPath:
+          path: /srv/gitlab/config
+      - name: logs
+        hostPath:
+          path: /srv/gitlab/logs 
+      - name: data
+        hostPath:
+          path: /srv/gitlab/data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-service
+  namespace: gitlab
+spec:
+  selector:
+    app: gitlab
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 80
+  externalIPs:
+    - 172.26.0.2
