@@ -1,3 +1,8 @@
 add k=kubernetes aliase in all machines
 add hosts app1.com app2.com to /etc/hosts
-add more handling to the scripts 
+add more handling to the scripts
+FIX in init.sh "wait for dev-app pod to be running"
+FIX auto grep ingress ip and map it to wil-playground.com and argocd.com
+
+
+use https://k3d.io/v5.4.7/usage/kubeconfig/ instead of export ...
