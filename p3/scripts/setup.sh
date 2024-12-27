@@ -51,5 +51,5 @@ fi
 
 
 #create alias for kubectl
-echo "alias k='kubectl'" >> /home/CorrectionMachine/.bashrc
-source /home/CorrectionMachine/.bashrc
+echo "alias k='kubectl'" >> /home/correctionmachine/.bashrc
+source /home/correctionmachine/.bashrc
