@@ -3,9 +3,9 @@
 # Clean up all Kubernetes resources (if needed)
 # Uncomment the following lines if you want to delete all Kubernetes resources and k3d clusters.
 # echo "Cleaning up Kubernetes resources..."
-# kubectl delete all --all
+kubectl delete all --all
 # echo "Deleting all k3d clusters..."
-# k3d cluster delete --all
+k3d cluster delete --all
 
 # Ensure the user is in the 'docker' group
 # if ! groups | grep -q docker; then
@@ -37,11 +37,20 @@ fi
 # Print ArgoCD initial password
 echo "ArgoCD password: $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)"
 
+kubectl get ns gitlab || kubectl create ns gitlab
+kubectl apply -n gitlab -f home/CorrectionMachine/iot/bonus/confs/gitlab-config.yml
+
+
+# script must wait for confirmation from the user before proceeding
+read -p "Press enter to continue"
+
 # Set up the 'dev' namespace and deploy the application
 echo "Setting up the 'dev' namespace and deploying application..."
 kubectl get ns dev || kubectl create ns dev
-kubectl apply -n dev -f /home/CorrectionMachine/iot/p3/confs/appconfig.yml
+kubectl apply -n dev -f /home/CorrectionMachine/iot/bonus/confs/appconfig.yml
 
+# Optionally, wait for the application pod to be ready
+# kubectl wait --for=condition=Ready pod -l app=wil-playground -n dev --timeout=300s
 
 echo "Setup complete."
 

@@ -33,7 +33,7 @@ spec:
         - containerPort: 22
         env:
         - name: GITLAB_OMNIBUS_CONFIG
-          value: "external_url 'http://gitlab.com:8080'; nginx['listen_port'] = 80;"
+          value: "external_url 'http://172.26.0.2:8080'; nginx['listen_port'] = 80;"
 
         # Add the readiness probe
         readinessProbe:
