@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: argo-ingress
-  namespace: argocd
+  name: wil-playground-ingress
+  namespace: dev
   annotations:
     kubernetes.io/ingress.class: traefik
     ingress.kubernetes.io/ssl-redirect: "false"
@@ -14,6 +14,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: argocd-server
+            name: wil-playground
             port:
               number: 80
