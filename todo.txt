@@ -1,2 +1,3 @@
 add k=kubernetes aliase in all machines
 add hosts app1.com app2.com to /etc/hosts
+add more handling to the scripts 

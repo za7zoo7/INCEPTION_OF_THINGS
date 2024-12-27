@@ -1,0 +1,58 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wil-playground-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wil-playground
+            port:
+              number: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: wil-playground
+spec:
+  selector:
+    app: wil-playground
+  ports:
+  - port: 80
+    targetPort: 8888
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wil-playground
+spec:
+  selector:
+    matchLabels:
+      app: wil-playground
+  template:
+    metadata:
+      labels:
+        app: wil-playground
+    spec:
+      containers:
+      - name: wil-playground
+        image: wil421/playground:v1
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8888
+
+

@@ -36,6 +36,7 @@ Vagrant.configure("2") do |config|
 		# add k=kubernetes aliase
 		server.vm.provision "shell", inline: <<-SHELL
 			echo "alias k='kubectl'" >> /home/vagrant/.bashrc
+			source /home/vagrant/.bashrc
 		SHELL
 
 		# Add app1.com and app2.com to /etc/hosts and point to master ip
