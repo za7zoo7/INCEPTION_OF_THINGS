@@ -40,7 +40,7 @@ echo "ArgoCD password: $(kubectl -n argocd get secret argocd-initial-admin-secre
 # Set up the 'dev' namespace and deploy the application
 echo "Setting up the 'dev' namespace and deploying application..."
 kubectl get ns dev || kubectl create ns dev
-kubectl apply -n dev -f /home/CorrectionMachine/iot/p3/confs/appconfig.yml
+kubectl apply -n dev -f /home/correctionmachine/iot/p3/confs/appconfig.yml
 
 
 echo "Setup complete."

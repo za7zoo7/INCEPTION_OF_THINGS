@@ -2,7 +2,6 @@
 
 # This script installs docker, k3d and kubectl if not installed
 
-
 # Install Docker if not installed
 if ! [ -x "$(command -v docker)" ]; then
   echo "Docker is not installed."
@@ -43,12 +42,6 @@ if ! [ -x "$(command -v kubectl)" ]; then
 else
   echo 'kubectl is installed'
 fi
-
-
-# curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-# sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
-# rm argocd-linux-amd64
-
 
 #create alias for kubectl
 echo "alias k='kubectl'" >> /home/correctionmachine/.bashrc
