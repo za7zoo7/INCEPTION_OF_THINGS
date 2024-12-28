@@ -57,7 +57,7 @@ read -p "Press enter to continue"
 # Set up the 'dev' namespace and deploy the application
 echo "Setting up the 'dev' namespace and deploying application..."
 kubectl get ns dev || kubectl create ns dev
-kubectl apply -n dev -f /home/correctionmachine/iot/bonus/confs/appconfig.yml
+kubectl apply -n argocd -f /home/correctionmachine/iot/bonus/confs/appconfig.yml
 
 # Optionally, wait for the application pod to be ready
 # kubectl wait --for=condition=Ready pod -l app=wil-playground -n dev --timeout=300s

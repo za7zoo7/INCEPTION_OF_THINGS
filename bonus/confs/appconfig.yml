@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: http://172.18.0.2:8080/root/iotapp.git  # Use the bridge service name
     targetRevision: main
-    path: manifest
+    path: manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
