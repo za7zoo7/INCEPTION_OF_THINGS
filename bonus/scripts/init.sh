@@ -40,6 +40,14 @@ echo "ArgoCD password: $(kubectl -n argocd get secret argocd-initial-admin-secre
 kubectl get ns gitlab || kubectl create ns gitlab
 kubectl apply -n gitlab -f /home/correctionmachine/iot/bonus/confs/gitlab-app.yml
 
+DEP_NAME=$(kubectl get pods -n gitlab|grep gitlab|awk '{print $1}')
+while [ 1 ]; do
+    if kubectl exec -n gitlab $DEP_NAME -- test -e /etc/gitlab/initial_root_password 2>/dev/null; then
+        GITLAB_PASSWORD=$(kubectl exec -it $DEP_NAME -n gitlab -- cat /etc/gitlab/initial_root_password |grep Password:|awk '{print $2}')
+        break
+    fi
+    sleep 1
+done
 
 # script must wait for confirmation from the user before proceeding
 read -p "Press enter to continue"
