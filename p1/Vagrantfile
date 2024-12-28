@@ -22,9 +22,6 @@ Vagrant.configure("2") do |config|
 	  config.vm.define opts[:name] do |node|
 		node.vm.hostname = opts[:hostname]
 		node.vm.network "private_network", ip: opts[:ip]
-		
-		# Forward SSH Tunel port for proxying
-		node.vm.network "forwarded_port", guest: 4711, host: 4711
   
 		node.vm.provider "virtualbox" do |vb|
 		  vb.memory = opts[:memory]
