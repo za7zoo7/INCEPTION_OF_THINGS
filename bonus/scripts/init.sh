@@ -49,6 +49,8 @@ while [ 1 ]; do
     sleep 1
 done
 
+echo "Gitlab password: $GITLAB_PASSWORD"
+
 # script must wait for confirmation from the user before proceeding
 read -p "Press enter to continue"
 
